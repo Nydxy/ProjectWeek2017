@@ -20,13 +20,13 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="EvaluateExpression.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
     <ClInclude Include="TestSystem.h">
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="Question.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Expression.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

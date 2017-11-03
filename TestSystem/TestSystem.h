@@ -4,5 +4,6 @@
 #include<iomanip>
 #include<cstring>
 #include<afx.h>
+
 using namespace std;
 void MenuMain();
