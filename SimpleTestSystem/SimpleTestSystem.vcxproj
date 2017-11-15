@@ -20,7 +20,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Expression.h" />
-    <ClInclude Include="Question.h" />
+    <ClInclude Include="Problem.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />

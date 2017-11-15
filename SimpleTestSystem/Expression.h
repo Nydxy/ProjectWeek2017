@@ -1,35 +1,35 @@
 #pragma once
 #include<vector>
 #include<stack>
-#include<iomanip>
+#include<sstream>
 
 using namespace std;
 
-typedef struct ExpressionItem//表达式的项
+typedef struct Item//表达式的项
 {
 	float Value;
 	char Operator;
 	bool IsOperator;
-	ExpressionItem(){}
-	ExpressionItem(float value)
+	Item(){}
+	Item(float value)
 	{
 		Value = value;
 		IsOperator = false;
 	}
-	ExpressionItem(char oper, bool isOperator)
+	Item(char oper, bool isOperator)
 	{
 		Operator = oper;
 		IsOperator = true;
 	}
-} ExpressionItem;
+} Item;
 
 //表达式类
 class Expression
 {
 private:
-	vector<ExpressionItem> items;  //表达式的项
+	vector<Item> items;  //表达式的项
 
-	static int Precedence(char op1, char op2)  //比较两个运算符优先级，返回1：大于，0：等于，-1：小于
+	int Precedence(char op1, char op2)  //比较两个运算符优先级，返回1：大于，0：等于，-1：小于
 	{
 		if (op1 == '(') return -1;
 		if (op1 == '+' || op1 == '-')
@@ -40,64 +40,67 @@ private:
 				if (op2 == '+' || op2 == '-') return 1;
 				else return 0;
 	}
-	static vector<ExpressionItem> InfixToPostfix(vector<ExpressionItem> infix)  //中缀表达式转后缀表达式
+
+	vector<Item> InfixToPostfix(vector<Item> infix)  //中缀表达式转后缀表达式
 	{
-		stack<ExpressionItem> optr; //运算符
-		vector<ExpressionItem> opnd;  //操作数
+		//这段是抄的
+		stack<Item> operators; //运算符
+		vector<Item> numbers;  //操作数
 
 		for (int i=0;i<infix.size();i++)
 		{
 			if (!infix[i].IsOperator)
 			{
-				opnd.push_back(infix[i]);  //遇到操作数，直接加到opnd的末尾
+				numbers.push_back(infix[i]);  //遇到操作数，直接加到numbers的末尾
 				continue;
 			}
 			//遇到左括号：将其入栈
 			if (infix[i].Operator == '(')
 			{
-				optr.push(infix[i]);
+				operators.push(infix[i]);
 				continue;
 			}
 			//遇到右括号：执行出栈操作，并将出栈的元素输出，直到弹出栈的是左括号，左括号不输出
 			if (infix[i].Operator == ')')
 			{
-				while (optr.top().Operator != '(')
+				while (operators.top().Operator != '(')
 				{
-					opnd.push_back(optr.top());  //将栈顶操作符加入到opnd中
-					optr.pop();  //将栈顶操作符从optr中弹出
+					numbers.push_back(operators.top());  //将栈顶操作符加入到numbers中
+					operators.pop();  //将栈顶操作符从operators中弹出
 				}
-				optr.pop();  //弹出(
+				operators.pop();  //弹出(
 				continue;
 			}
 			//遇到其它操作符
 			if (infix[i].IsOperator)
 			{
-				if (optr.empty())
+				if (operators.empty())
 				{
-					optr.push(infix[i]); //如果栈为空，直接进栈
+					operators.push(infix[i]); //如果栈为空，直接进栈
 					continue;
 				}
 				//弹出所有优先级大于或者等于该运算符的栈顶元素
-				while (!optr.empty() && Precedence(infix[i].Operator, optr.top().Operator) != 1 && optr.top().Operator != '(')
+				while (!operators.empty() && Precedence(infix[i].Operator, operators.top().Operator) != 1 && operators.top().Operator != '(')
 				{
-					opnd.push_back(optr.top());
-					optr.pop();
+					numbers.push_back(operators.top());
+					operators.pop();
 				}
-				optr.push(infix[i]);  //直到栈顶操作符优先级低于该操作符，将该操作符入栈
+				operators.push(infix[i]);  //直到栈顶操作符优先级低于该操作符，将该操作符入栈
 			}
 		}
 
-		while (!optr.empty())
+		while (!operators.empty())
 		{
-			opnd.push_back(optr.top());
-			optr.pop();
+			numbers.push_back(operators.top());
+			operators.pop();
 		}
-		return opnd;
+		return numbers;
 	}
 
-	static float Operate(float a, char optr, float b)
+	float Operate(float a, char operators, float b)
 	{
-		switch (optr)
+		//也没什么好说的，运算
+		switch (operators)
 		{
 		case '+': return a + b;
 		case '-': return a - b;
@@ -106,8 +109,9 @@ private:
 		}
 	}
 
-	static float EvaluatePostfix(vector<ExpressionItem> postfix)  //后缀表达式求值
+	float EvaluatePostfix(vector<Item> postfix)  //后缀表达式求值
 	{
+		//没什么好说的，easy
 		stack<float> result;
 		int length = postfix.size();
 		for (int i = 0; i < length; i++)
@@ -133,11 +137,7 @@ private:
 	}
 
 public:
-	int Length()  //项数
-	{
-		return items.size();
-	}
-	void Append(ExpressionItem item)  //添加一项
+	void Append(Item item)  //添加一项
 	{
 		items.push_back(item);
 	}

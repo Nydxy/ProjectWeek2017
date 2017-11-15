@@ -1,7 +1,6 @@
 #pragma once
 #include<vector>
 #include<stack>
-#include<iomanip>
 using namespace std;
 
 //表达式的项
@@ -29,11 +28,8 @@ class Expression
 private:
 	vector<ExpressionItem> items;  //表达式的项
 
-	static int Precedence(char op1, char op2);//比较两个运算符优先级，返回1：大于，0：等于，-1：小于
 	static vector<ExpressionItem> InfixToPostfix(vector<ExpressionItem> infix);//中缀表达式转后缀表达式
 	static float EvaluatePostfix(vector<ExpressionItem> postfix);//后缀表达式求值
-	template<class T>
-	string to_string(const T& t); //将T类型转换成字符串
 
 public:
 	int Length();//项数
@@ -48,24 +44,22 @@ public:
 	void RemoveUselessBrackets();  //去除多余的括号(实验性)
 };
 
-int Expression::Precedence(char op1, char op2)  //比较两个运算符优先级，返回1：大于，0：等于，-1：小于
-{
-	if (op1 == '(') return -1;
-	if (op1 == '+' || op1 == '-')
-		if (op2 == '*' || op2 == '/') return -1;
-		else	return 0;
-
-		if (op1 == '*' || op1 == '/')
-			if (op2 == '+' || op2 == '-') return 1;
-			else return 0;
-}
-
-//比较两个运算符优先级，返回1：大于，0：等于，-1：小于
-
 vector<ExpressionItem> Expression::InfixToPostfix(vector<ExpressionItem> infix)  //中缀表达式转后缀表达式
 {
 	stack<ExpressionItem> optr; //运算符
 	vector<ExpressionItem> opnd;  //操作数
+								  
+	auto Precedence=[](char op1, char op2)//比较两个运算符优先级，返回1：大于，0：等于，-1：小于
+	{
+		if (op1 == '(') return -1;
+		if (op1 == '+' || op1 == '-')
+			if (op2 == '*' || op2 == '/') return -1;
+			else	return 0;
+
+			if (op1 == '*' || op1 == '/')
+				if (op2 == '+' || op2 == '-') return 1;
+				else return 0;
+	};
 
 	for (auto i : infix)
 	{
@@ -205,14 +199,21 @@ float Expression::Evaluate() //计算表达式
 string Expression::ToString()
 {
 	string str;
+	auto tostring = [](float t)  //浮点数转化为字符串
+	{
+		ostringstream oss;//创建一个流
+		oss << t;//把值传递如流中
+		return oss.str();//获取转换后的字符转并将其写入result
+	};
+
 	for (auto i : items)
 	{
 		if (i.IsOperator)
 			str += i.Operator;
 		else
 		{
-			if (i.Value<0) str += "(" + to_string(i.Value) + ")";
-			else str += to_string(i.Value);
+			if (i.Value<0) str += "(" + tostring(i.Value) + ")";
+			else str += tostring(i.Value);
 		}
 	}
 	return str;
@@ -238,12 +239,4 @@ void Expression::RemoveUselessBrackets()
 			break;
 		}
 	}
-}
-
-template<class T>
-string Expression::to_string(const T & t)
-{
-	ostringstream oss;//创建一个流
-	oss << t;//把值传递如流中
-	return oss.str();//获取转换后的字符转并将其写入result
 }

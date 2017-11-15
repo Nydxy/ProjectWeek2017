@@ -6,6 +6,7 @@
 #include<sstream>
 #include<fstream>
 #include<map>
+#include<time.h>
 
 class UI
 {

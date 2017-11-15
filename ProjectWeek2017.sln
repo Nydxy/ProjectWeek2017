@@ -7,7 +7,7 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "JosephProblem", "JosephProb
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TestSystem", "TestSystem\TestSystem.vcxproj", "{1D26D47A-76BB-4F7C-AD00-6379D0F100D0}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "forZGN", "forZGN\forZGN.vcxproj", "{28A14731-5849-4169-8D97-13BC6AFE3AA1}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SimpleTestSystem", "SimpleTestSystem\SimpleTestSystem.vcxproj", "{28A14731-5849-4169-8D97-13BC6AFE3AA1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

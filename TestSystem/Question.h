@@ -205,7 +205,6 @@ void Question::GenerateExpression()//生成表达式
 	}
 
 	AnswerValue = expression.Evaluate(); //求出答案并保存
-										 //在此处求出答案，方便判断答案是否符合要求
 }
 
 void Question::GenerateQA()  //根据表达式生成题目和答案

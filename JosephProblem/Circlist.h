@@ -1,4 +1,26 @@
 #pragma once
+#include<iostream>
+#include<stdlib.h>
+#include<time.h>
+using namespace std;
+int GetRandom(int a, int b)
+{
+	return (rand() % (b - a + 1)) + a;
+}
+
+class Person
+{
+public:
+	int index;//序号
+	int code;//密码
+	Person *next;
+	Person() {}
+	Person(int i, int m)
+	{
+		index = i;
+		code = m;
+	}
+};
 
 //带头结点的循环链表类
 class Circlist

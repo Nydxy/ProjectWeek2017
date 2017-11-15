@@ -20,9 +20,6 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="JosephProblem.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
     <ClInclude Include="Circlist.h">
       <Filter>头文件</Filter>
     </ClInclude>
